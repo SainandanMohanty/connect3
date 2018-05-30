@@ -8,6 +8,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     boolean turn;
+    int clickCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,11 +16,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         turn = false;
-
         initialise();
     }
 
     private void initialise() {
+        clickCounter = 0;
+
         TextView textView;
         for (int i = 0; i < 9; i++) {
             textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
@@ -30,12 +32,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onClick(View view) {
+        clickCounter++;
+
         TextView textView = (TextView) view;
         int tag = (int) textView.getTag();
 
         if (tag == 0) {
-            textView.setAlpha(0);
-            textView.setY(-2000);
             if (turn) {
                 textView.setText("O");
                 textView.setTag(1);
@@ -43,20 +45,29 @@ public class MainActivity extends AppCompatActivity {
                 textView.setText("X");
                 textView.setTag(2);
             }
-            textView.animate().translationYBy(2000).alpha(1).setDuration(500);
+            textView.animate().alpha(1).setDuration(500);
 
-            if (isGameOver(textView)) {
-                TextView textView1 = findViewById(R.id.textView);
-                textView1.setAlpha(0);
+            if (clickCounter > 4) {
+                if (isGameOver(textView)) {
+                    TextView textView1 = findViewById(R.id.textView);
+                    textView1.setAlpha(0);
 
-                if (turn) {
-                    textView1.setText("O has won");
-                } else {
-                    textView1.setText("X has won");
+                    if (turn) {
+                        textView1.setText("O has won");
+                    } else {
+                        textView1.setText("X has won");
+                    }
+                    textView1.animate().alpha(1).setDuration(500);
+
+                    gameOver();
+                } else if (clickCounter == 9) {
+                    TextView textView1 = findViewById(R.id.textView);
+                    textView1.setAlpha(0);
+                    textView1.setText("The game is tied");
+                    textView1.animate().alpha(1).setDuration(500);
+
+                    gameOver();
                 }
-                textView1.animate().alpha(1).setDuration(500);
-
-                gameOver();
             }
 
             turn = !turn;
