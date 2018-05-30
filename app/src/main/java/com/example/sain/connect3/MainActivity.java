@@ -79,10 +79,10 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isGameOver(TextView textView0) {
 
-        TextView textView;
         boolean flag = true;
         Object tag = textView0.getTag();
         int id = Integer.parseInt(getResources().getResourceName(textView0.getId()).substring(37)) - 2;
+        TextView textView;
 
         for (int i = (id / 3) * 3; i < ((id / 3) * 3) + 3; i++) {
             textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
@@ -90,13 +90,43 @@ public class MainActivity extends AppCompatActivity {
                 flag = false;
                 break;
             }
+
+            flag = true;
         }
 
         if (flag) {
-            return flag;
+            return true;
         }
 
         for (int i = id % 3; i < (id % 3) + 9; i += 3) {
+            textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
+            if (!textView.getTag().equals(tag)) {
+                flag = false;
+                break;
+            }
+
+            flag = true;
+        }
+
+        if (flag) {
+            return true;
+        }
+
+        for (int i = 0; i < 12; i += 4) {
+            textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
+            if (!textView.getTag().equals(tag)) {
+                flag = false;
+                break;
+            }
+
+            flag = true;
+        }
+
+        if (flag) {
+            return true;
+        }
+
+        for (int i = 2; i < 8; i += 2) {
             textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
             if (!textView.getTag().equals(tag)) {
                 flag = false;
