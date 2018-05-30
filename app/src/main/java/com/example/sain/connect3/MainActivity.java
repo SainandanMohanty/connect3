@@ -19,55 +19,92 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         turn = false;
-
         cellList.clear();
 
-        for (int i = 0; i < 9; i += 3) {
-            for (int j = 0; j < 3; j++) {
-                Cell cell = new Cell();
-                cell.positionY = i;
-                cell.positionX = j;
-                cell.id = getResources().getIdentifier("textView" + (i + j + 2), "id", getPackageName());
-                cellList.add(cell);
-            }
+        for (int i = 0; i < 9; i++) {
+            Cell cell = new Cell();
+            cell.id = getResources().getIdentifier("textView" + (i + 2), "id", getPackageName());
+            cell.status = 0;
+            cellList.add(cell);
         }
     }
+
 
     public void onClick(View view) {
         TextView textView = (TextView) view;
 
-        int id = Integer.parseInt(getResources().getResourceName(textView.getId()).substring(37));
+        int id = Integer.parseInt(getResources().getResourceName(textView.getId()).substring(37)) - 2;
 
-        if (!cellList.get(id - 2).clicked) {
+        if (cellList.get(id).status == 0) {
             textView.setY(-2000);
-            if (!turn) {
-                textView.setText("X");
-            } else {
+            if (turn) {
                 textView.setText("O");
+                cellList.get(id).status = 1;
+            } else {
+                textView.setText("X");
+                cellList.get(id).status = 2;
             }
             textView.animate().translationYBy(2000).alpha(1).setDuration(1000);
 
-            cellList.get(id - 2).clicked = true;
-            cellList.get(id - 2).status = turn;
+            if (gameOver(id)) {
+                TextView textView1 = findViewById(R.id.textView);
 
-            turn = !turn;
+                if (!turn) {
+                    textView1.setText("X has won");
+                } else {
+                    textView1.setText("O has won");
+                }
+
+                restart();
+            } else {
+                turn = !turn;
+            }
         }
     }
 
     public void onClickRestart(View view) {
+        restart();
+    }
+
+    private void restart() {
         TextView textView;
         for (int i = 0; i < 9; i++) {
             textView = findViewById(cellList.get(i).id);
             textView.setText(null);
-            cellList.get(i).clicked = false;
+            cellList.get(i).status = 0;
         }
     }
 
+    private boolean gameOver(int id) {
+
+        boolean flag = true;
+        int status = cellList.get(id).status;
+
+        for (int i = (id / 3) * 3; i < ((id / 3) * 3) + 3; i++) {
+            if (cellList.get(i).status != status) {
+                flag = false;
+                break;
+            }
+        }
+
+        if (flag) {
+            return flag;
+        }
+
+        for (int i = id % 3; i < (id % 3) + 9; i += 3) {
+            if (cellList.get(i).status != status) {
+                flag = false;
+                break;
+            }
+
+            flag = true;
+        }
+
+        return flag;
+    }
+
     class Cell {
-        int positionX;
-        int positionY;
-        boolean clicked = false;
-        boolean status;
+        int status;
         int id;
     }
 }
