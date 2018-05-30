@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         TextView textView;
         for (int i = 0; i < 9; i++) {
             textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
-            textView.setText(null);
+            textView.animate().alpha(0).setDuration(500);
             textView.setTag(0);
         }
     }
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 textView.setText("X");
                 textView.setTag(2);
             }
-            textView.animate().translationYBy(2000).alpha(1).setDuration(1000);
+            textView.animate().translationYBy(2000).alpha(1).setDuration(500);
 
             if (isGameOver(textView)) {
                 TextView textView1 = findViewById(R.id.textView);
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     textView1.setText("X has won");
                 }
-                textView1.animate().alpha(1).setDuration(1000);
+                textView1.animate().alpha(1).setDuration(500);
 
                 gameOver();
             }
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClickRestart(View view) {
         initialise();
         TextView textView = findViewById(R.id.textView);
-        textView.setText(null);
+        textView.animate().alpha(0).setDuration(500);
     }
 
     private boolean isGameOver(TextView textView0) {
