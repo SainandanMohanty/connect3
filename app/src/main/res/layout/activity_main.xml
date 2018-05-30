@@ -48,32 +48,35 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/textView2"
+            <ImageView
+                android:id="@+id/imageView2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="24dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:alpha="0"
                 android:onClick="onClick"
-                android:textSize="36sp" />
+                app:srcCompat="@drawable/x" />
 
-            <TextView
-                android:id="@+id/textView3"
+            <ImageView
+                android:id="@+id/imageView3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="24dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:alpha="0"
                 android:onClick="onClick"
-                android:textSize="36sp" />
+                app:srcCompat="@drawable/o" />
 
-            <TextView
-                android:id="@+id/textView4"
+            <ImageView
+                android:id="@+id/imageView4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="24dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:alpha="0"
                 android:onClick="onClick"
-                android:textSize="36sp" />
+                app:srcCompat="@drawable/x" />
         </TableRow>
 
         <TableRow
@@ -81,32 +84,35 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/textView5"
+            <ImageView
+                android:id="@+id/imageView5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="24dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:alpha="0"
                 android:onClick="onClick"
-                android:textSize="36sp" />
+                app:srcCompat="@drawable/o" />
 
-            <TextView
-                android:id="@+id/textView6"
+            <ImageView
+                android:id="@+id/imageView6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="24dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:alpha="0"
                 android:onClick="onClick"
-                android:textSize="36sp" />
+                app:srcCompat="@drawable/x" />
 
-            <TextView
-                android:id="@+id/textView7"
+            <ImageView
+                android:id="@+id/imageView7"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="24dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:alpha="0"
                 android:onClick="onClick"
-                android:textSize="36sp" />
+                app:srcCompat="@drawable/o" />
         </TableRow>
 
         <TableRow
@@ -114,32 +120,35 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/textView8"
+            <ImageView
+                android:id="@+id/imageView8"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="24dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:alpha="0"
                 android:onClick="onClick"
-                android:textSize="36sp" />
+                app:srcCompat="@drawable/x" />
 
-            <TextView
-                android:id="@+id/textView9"
+            <ImageView
+                android:id="@+id/imageView9"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="24dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:alpha="0"
                 android:onClick="onClick"
-                android:textSize="36sp" />
+                app:srcCompat="@drawable/o" />
 
-            <TextView
-                android:id="@+id/textView10"
+            <ImageView
+                android:id="@+id/imageView10"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="24dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:alpha="0"
                 android:onClick="onClick"
-                android:textSize="36sp" />
+                app:srcCompat="@drawable/x" />
         </TableRow>
 
     </TableLayout>
