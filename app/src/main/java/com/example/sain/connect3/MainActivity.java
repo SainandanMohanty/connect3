@@ -5,13 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
     boolean turn;
-    List<Cell> cellList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,80 +15,120 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         turn = false;
-        cellList.clear();
 
+        initialise();
+    }
+
+    private void initialise() {
+        TextView textView;
         for (int i = 0; i < 9; i++) {
-            Cell cell = new Cell();
-            cell.id = getResources().getIdentifier("textView" + (i + 2), "id", getPackageName());
-            cell.status = 0;
-            cellList.add(cell);
+            textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
+            textView.animate().alpha(0).setDuration(500);
+            textView.setTag(0);
         }
     }
 
 
     public void onClick(View view) {
         TextView textView = (TextView) view;
+        int tag = (int) textView.getTag();
 
-        int id = Integer.parseInt(getResources().getResourceName(textView.getId()).substring(37)) - 2;
-
-        if (cellList.get(id).status == 0) {
+        if (tag == 0) {
+            textView.setAlpha(0);
             textView.setY(-2000);
             if (turn) {
                 textView.setText("O");
-                cellList.get(id).status = 1;
+                textView.setTag(1);
             } else {
                 textView.setText("X");
-                cellList.get(id).status = 2;
+                textView.setTag(2);
             }
-            textView.animate().translationYBy(2000).alpha(1).setDuration(1000);
+            textView.animate().translationYBy(2000).alpha(1).setDuration(500);
 
-            if (gameOver(id)) {
+            if (isGameOver(textView)) {
                 TextView textView1 = findViewById(R.id.textView);
+                textView1.setAlpha(0);
 
-                if (!turn) {
-                    textView1.setText("X has won");
-                } else {
+                if (turn) {
                     textView1.setText("O has won");
+                } else {
+                    textView1.setText("X has won");
                 }
+                textView1.animate().alpha(1).setDuration(500);
 
-                restart();
-            } else {
-                turn = !turn;
+                gameOver();
             }
+
+            turn = !turn;
+        }
+    }
+
+    private void gameOver() {
+        TextView textView;
+        for (int i = 0; i < 9; i++) {
+            textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
+            textView.setTag(-1);
         }
     }
 
     public void onClickRestart(View view) {
-        restart();
+        initialise();
+        TextView textView = findViewById(R.id.textView);
+        textView.animate().alpha(0).setDuration(500);
     }
 
-    private void restart() {
-        TextView textView;
-        for (int i = 0; i < 9; i++) {
-            textView = findViewById(cellList.get(i).id);
-            textView.setText(null);
-            cellList.get(i).status = 0;
-        }
-    }
-
-    private boolean gameOver(int id) {
+    private boolean isGameOver(TextView textView0) {
 
         boolean flag = true;
-        int status = cellList.get(id).status;
+        Object tag = textView0.getTag();
+        int id = Integer.parseInt(getResources().getResourceName(textView0.getId()).substring(37)) - 2;
+        TextView textView;
 
         for (int i = (id / 3) * 3; i < ((id / 3) * 3) + 3; i++) {
-            if (cellList.get(i).status != status) {
+            textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
+            if (!textView.getTag().equals(tag)) {
                 flag = false;
                 break;
             }
+
+            flag = true;
         }
 
         if (flag) {
-            return flag;
+            return true;
         }
 
         for (int i = id % 3; i < (id % 3) + 9; i += 3) {
-            if (cellList.get(i).status != status) {
+            textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
+            if (!textView.getTag().equals(tag)) {
+                flag = false;
+                break;
+            }
+
+            flag = true;
+        }
+
+        if (flag) {
+            return true;
+        }
+
+        for (int i = 0; i < 12; i += 4) {
+            textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
+            if (!textView.getTag().equals(tag)) {
+                flag = false;
+                break;
+            }
+
+            flag = true;
+        }
+
+        if (flag) {
+            return true;
+        }
+
+        for (int i = 2; i < 8; i += 2) {
+            textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
+            if (!textView.getTag().equals(tag)) {
                 flag = false;
                 break;
             }
@@ -101,10 +137,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return flag;
-    }
-
-    class Cell {
-        int status;
-        int id;
     }
 }
