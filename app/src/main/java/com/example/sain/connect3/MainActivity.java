@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 imageView.setImageResource(R.drawable.x);
                 imageView.setTag(2);
             }
-            imageView.animate().alpha(1).setDuration(1000);
+            imageView.animate().alpha(1).setDuration(250);
 
             if (clickCounter > 4) {
                 if (isGameOver(imageView)) {
