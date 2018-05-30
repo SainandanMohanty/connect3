@@ -5,13 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
     boolean turn;
-    List<Cell> cellList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,34 +15,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         turn = false;
-        cellList.clear();
 
         for (int i = 0; i < 9; i++) {
-            Cell cell = new Cell();
-            cell.id = getResources().getIdentifier("textView" + (i + 2), "id", getPackageName());
-            cell.status = 0;
-            cellList.add(cell);
+            TextView textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
+            textView.setTag(-1);
         }
     }
 
 
     public void onClick(View view) {
         TextView textView = (TextView) view;
+        int tag = (int) textView.getTag();
 
-        int id = Integer.parseInt(getResources().getResourceName(textView.getId()).substring(37)) - 2;
-
-        if (cellList.get(id).status == 0) {
+        if (tag == -1) {
             textView.setY(-2000);
             if (turn) {
                 textView.setText("O");
-                cellList.get(id).status = 1;
+                textView.setTag(0);
             } else {
                 textView.setText("X");
-                cellList.get(id).status = 2;
+                textView.setTag(1);
             }
             textView.animate().translationYBy(2000).alpha(1).setDuration(1000);
 
-            if (gameOver(id)) {
+            if (gameOver(textView)) {
                 TextView textView1 = findViewById(R.id.textView);
 
                 if (!turn) {
@@ -69,19 +61,22 @@ public class MainActivity extends AppCompatActivity {
     private void restart() {
         TextView textView;
         for (int i = 0; i < 9; i++) {
-            textView = findViewById(cellList.get(i).id);
+            textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
             textView.setText(null);
-            cellList.get(i).status = 0;
+            textView.setTag(-1);
         }
     }
 
-    private boolean gameOver(int id) {
+    private boolean gameOver(TextView textView0) {
 
+        TextView textView;
         boolean flag = true;
-        int status = cellList.get(id).status;
+        Object tag = textView0.getTag();
+        int id = Integer.parseInt(getResources().getResourceName(textView0.getId()).substring(37)) - 2;
 
         for (int i = (id / 3) * 3; i < ((id / 3) * 3) + 3; i++) {
-            if (cellList.get(i).status != status) {
+            textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
+            if (!textView.getTag().equals(tag)) {
                 flag = false;
                 break;
             }
@@ -92,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         for (int i = id % 3; i < (id % 3) + 9; i += 3) {
-            if (cellList.get(i).status != status) {
+            textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
+            if (!textView.getTag().equals(tag)) {
                 flag = false;
                 break;
             }
@@ -101,10 +97,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return flag;
-    }
-
-    class Cell {
-        int status;
-        int id;
     }
 }
