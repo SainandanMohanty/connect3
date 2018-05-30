@@ -16,9 +16,15 @@ public class MainActivity extends AppCompatActivity {
 
         turn = false;
 
+        initialise();
+    }
+
+    private void initialise() {
+        TextView textView;
         for (int i = 0; i < 9; i++) {
-            TextView textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
-            textView.setTag(-1);
+            textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
+            textView.setText(null);
+            textView.setTag(0);
         }
     }
 
@@ -27,47 +33,51 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = (TextView) view;
         int tag = (int) textView.getTag();
 
-        if (tag == -1) {
+        if (tag == 0) {
+            textView.setAlpha(0);
             textView.setY(-2000);
             if (turn) {
                 textView.setText("O");
-                textView.setTag(0);
+                textView.setTag(1);
             } else {
                 textView.setText("X");
-                textView.setTag(1);
+                textView.setTag(2);
             }
             textView.animate().translationYBy(2000).alpha(1).setDuration(1000);
 
-            if (gameOver(textView)) {
+            if (isGameOver(textView)) {
                 TextView textView1 = findViewById(R.id.textView);
+                textView1.setAlpha(0);
 
-                if (!turn) {
-                    textView1.setText("X has won");
-                } else {
+                if (turn) {
                     textView1.setText("O has won");
+                } else {
+                    textView1.setText("X has won");
                 }
+                textView1.animate().alpha(1).setDuration(1000);
 
-                restart();
-            } else {
-                turn = !turn;
+                gameOver();
             }
+
+            turn = !turn;
         }
     }
 
-    public void onClickRestart(View view) {
-        restart();
-    }
-
-    private void restart() {
+    private void gameOver() {
         TextView textView;
         for (int i = 0; i < 9; i++) {
             textView = findViewById(getResources().getIdentifier("textView" + (i + 2), "id", getPackageName()));
-            textView.setText(null);
             textView.setTag(-1);
         }
     }
 
-    private boolean gameOver(TextView textView0) {
+    public void onClickRestart(View view) {
+        initialise();
+        TextView textView = findViewById(R.id.textView);
+        textView.setText(null);
+    }
+
+    private boolean isGameOver(TextView textView0) {
 
         TextView textView;
         boolean flag = true;
